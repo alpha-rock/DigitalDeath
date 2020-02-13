@@ -1,0 +1,316 @@
+// A basic everyday NeoPixel strip test program.
+
+// NEOPIXEL BEST PRACTICES for most reliable operation:
+// - Add 1000 uF CAPACITOR between NeoPixel strip's + and - connections.
+// - MINIMIZE WIRING LENGTH between microcontroller board and first pixel.
+// - NeoPixel strip's DATA-IN should pass through a 300-500 OHM RESISTOR.
+// - AVOID connecting NeoPixels on a LIVE CIRCUIT. If you must, ALWAYS
+//   connect GROUND (-) first, then +, then data.
+// - When using a 3.3V microcontroller with a 5V-powered NeoPixel strip,
+//   a LOGIC-LEVEL CONVERTER on the data line is STRONGLY RECOMMENDED.
+// (Skipping these may work OK on your workbench but can fail in the field)
+
+#include <Adafruit_NeoPixel.h>
+#include <avr/pgmspace.h>
+#ifdef __AVR__
+ #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
+#endif
+
+// Which pin on the Arduino is connected to the NeoPixels?
+// On a Trinket or Gemma we suggest changing this to 1:
+#define LED_PIN1    3
+#define LED_PIN2    4
+#define LED_PIN3    5
+#define LED_PIN4    6
+#define LED_PIN5    7
+
+// How many NeoPixels are attached to the Arduino?
+#define LED_COUNT 30
+
+unsigned long rgb=0x6f56a3;
+byte red=rgb >> 16;
+byte green=(rgb & 0x00ff00) >> 8;
+byte blue=(rgb & 0x0000ff);
+
+//unsigned long aditya[150]={0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82a00, 0xe82d01, 0xe93004, 0xe82c00, 0xe82b00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82900, 0xea350c, 0xfacbc0, 0xfbdbd4, 0xf7b3a4, 0xe82800, 0xe82b00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82200, 0xef6444, 0xffffff, 0xffffff, 0xfffcfc, 0xec4620, 0xe82600, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe71f00, 0xf6a593, 0xffffff, 0xfeefec, 0xffffff, 0xf28066, 0xe71f00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82c00, 0xe82a00, 0xe92e05, 0xfde6e1, 0xfbd3ca, 0xf38e77, 0xffffff, 0xf9c1b4, 0xe82300, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82c00, 0xe82400, 0xed5835, 0xffffff, 0xfcdfd8, 0xf8bcae, 0xffffff, 0xfef3f1, 0xeb3e16, 0xe82800, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82c00, 0xe71f00, 0xf4957f, 0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xf07457, 0xe72000, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82b00, 0xe92b04, 0xfce0da, 0xffffff, 0xf06d4f, 0xec4e38, 0xfacec4, 0xffffff, 0xf9bfb2, 0xe82200, 0xe82c00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82800, 0xeb3f16, 0xf9c1b4, 0xf6a896, 0xe82400, 0xe71900, 0xf06f51, 0xf9c2b6, 0xf7b1a1, 0xe93107, 0xe82a00, 0xe82c00, 0xe82c00, 
+//0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00, 0xe72500, 0xe72400, 0xe82b00, 0xe82d00, 0xe82700, 0xe72400, 0xe82600, 0xe82c00, 0xe82c00, 0xe82c00, 0xe82c00};
+
+//unsigned long john[150]={0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe100, 0xffe000, 0xffe300, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe800, 0xffd700, 0xff3500, 0xff2700, 0xffb400, 0xffed00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffd400, 0xff0b00, 0xff0000, 0xffa800, 0xfff000, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe900, 0xffd400, 0xff1100, 0xff0000, 0xffaa00, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe900, 0xffd400, 0xff1100, 0xff0000, 0xffaa00, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffed00, 0xffda00, 0xff1200, 0xff0000, 0xffaa00, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffe500, 0xffea00, 0xffdf00, 0xffb800, 0xff0900, 0xff0000, 0xffad00, 0xffee00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffe600, 0xffe600, 0xff3500, 0xff0400, 0xff0000, 0xff0400, 0xffcb00, 0xffeb00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffe600, 0xffe700, 0xff5200, 0xff2400, 0xff3500, 0xff9500, 0xffec00, 0xffe500, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+//0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe500, 0xffe700, 0xffe200, 0xffe800, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00};
+
+unsigned long badi[150] ={0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe100, 0xffe000, 0xffe300, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe800, 0xffd700, 0xff3500, 0xff2700, 0xffb400, 0xffed00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffd400, 0xff0b00, 0xff0000, 0xffa800, 0xfff000, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe900, 0xffd400, 0xff1100, 0xff0000, 0xffaa00, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe900, 0xffd400, 0xff1100, 0xff0000, 0xffaa00, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffed00, 0xffda00, 0xff1200, 0xff0000, 0xffaa00, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffe500, 0xffea00, 0xffdf00, 0xffb800, 0xff0900, 0xff0000, 0xffad00, 0xffee00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffe600, 0xffe600, 0xff3500, 0xff0400, 0xff0000, 0xff0400, 0xffcb00, 0xffeb00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffe600, 0xffe700, 0xff5200, 0xff2400, 0xff3500, 0xff9500, 0xffec00, 0xffe500, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 
+0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffe500, 0xffe700, 0xffe200, 0xffe800, 0xffef00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00, 0xffea00};
+
+//const unsigned long tutku[150]={0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0100, 0xff0400, 0xff0400, 0xff0400, 0xff0400, 0xff0400, 0xff0100, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff2c00, 0xffc100, 0xffbb00, 0xffb800, 0xffbc00, 0xffbe00, 0xff2300, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff3100, 0xffd500, 0xffdf00, 0xffe800, 0xffdf00, 0xffd100, 0xff2700, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0300, 0xff0d00, 0xff9600, 0xfff700, 0xff8700, 0xff0d00, 0xff0200, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff9000, 0xfff900, 0xff8000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff9100, 0xfff800, 0xff8100, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff9100, 0xfff800, 0xff8100, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff9800, 0xffff00, 0xff8700, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff6700, 0xffb100, 0xff5c00, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 
+//0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000, 0xff0000};
+
+//unsigned long heart[150] = 
+//{0x91ccec, 0x91ccec, 0x91ccec, 0x8ed2f4, 0x93b7d3, 0x9da4ba, 0x90c5e5, 0x8ed6f8, 0x8fc6e6, 0x9da4bb, 0x94b4d0, 0x8ed2f4, 0x91ccec, 0x91ccec, 0x91ccec, 
+//0x91ccec, 0x91ccec, 0x8fd2f4, 0x9da7be, 0xe27f7a, 0xf6a49c, 0xd8898b, 0x97abc4, 0xd1898c, 0xf5aca5, 0xe58c87, 0x9fa2b8, 0x8fd2f4, 0x91ccec, 0x91ccec, 
+//0x91ccec, 0x91cded, 0x8dd0f2, 0xc56567, 0xff7e72, 0xff847b, 0xff6e62, 0xe74339, 0xff7166, 0xff8a81, 0xff897e, 0xcd6767, 0x8dcdee, 0x91cded, 0x91ccec, 
+//0x91ccec, 0x91cded, 0x8dcff1, 0xc75b5b, 0xff4b3e, 0xfd473a, 0xfe4437, 0xff4133, 0xfe4739, 0xfe483b, 0xff4a3c, 0xd55a57, 0x8dcdee, 0x91cdee, 0x91ccec, 
+//0x91ccec, 0x91ccec, 0x8ed7f9, 0xaa7884, 0xf42414, 0xff3b2d, 0xff3d2f, 0xff3e30, 0xff3e30, 0xff3a2b, 0xff2715, 0xbc737c, 0x8cd6f9, 0x91ccec, 0x91ccec, 
+//0x91ccec, 0x91ccec, 0x91d0f1, 0x90c1df, 0xc62b25, 0xfb2415, 0xff3c2e, 0xff4233, 0xff3f30, 0xff2b1c, 0xe02c24, 0x94bcd9, 0x90d1f2, 0x91ccec, 0x91ccec, 
+//0x91ccec, 0x91ccec, 0x91ccec, 0x90d6f8, 0x969eb5, 0xd1140b, 0xfd281b, 0xff4233, 0xff3829, 0xe81b10, 0x9c97ad, 0x8ed6f9, 0x91ccec, 0x91ccec, 0x91ccec, 
+//0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec, 0x8ed9fb, 0x9b8a9c, 0xd60e05, 0xfa2014, 0xe7170b, 0xa38394, 0x8dd8fb, 0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec, 
+//0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec, 0x91cded, 0x8ed9fb, 0x9f7f90, 0xc10b09, 0xa17786, 0x8ed8fb, 0x91cded, 0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec, 
+//0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec, 0x91cded, 0x90d1f2, 0x93a3bb, 0x8fcff0, 0x91cdee, 0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec, 0x91ccec};
+Adafruit_NeoPixel strip1(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip2(LED_COUNT, LED_PIN2, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip3(LED_COUNT, LED_PIN3, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip4(LED_COUNT, LED_PIN4, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip5(LED_COUNT, LED_PIN5, NEO_GRB + NEO_KHZ800);
+// Argument 1 = Number of pixels in NeoPixel strip
+// Argument 2 = Arduino pin number (most are valid)
+// Argument 3 = Pixel type flags, add together as needed:
+//   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
+//   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
+//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
+//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
+//   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
+
+
+// setup() function -- runs once at startup --------------------------------
+
+void setup() {
+  // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
+  // Any other board, you can remove this part (but no harm leaving it):
+#if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
+  clock_prescale_set(clock_div_1);
+#endif
+  // END of Trinket-specific code.
+  Serial.begin(9600);
+  strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip1.show();            // Turn OFF all pixels ASAP
+  strip1.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip2.show();            // Turn OFF all pixels ASAP
+  strip2.setBrightness(50); 
+  strip3.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip3.show();            // Turn OFF all pixels ASAP
+  strip3.setBrightness(50); 
+  strip4.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip4.show();            // Turn OFF all pixels ASAP
+  strip4.setBrightness(50); 
+  strip5.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip5.show();            // Turn OFF all pixels ASAP
+  strip5.setBrightness(50);
+   
+}
+
+
+// loop() function -- runs repeatedly as long as board is on ---------------
+
+void loop() {
+  image(5000);//makes image
+  // Fill along the length of the strip in various colors...
+  colorWipe(strip1.Color(255,   255,   0), 50); // Red
+  //colorWipe(strip1.Color(  0, green,   0), 50); // Green 
+  //colorWipe(strip1.Color(  0,   0, blue), 50); // Blue
+  
+
+  
+
+}
+
+void image(int wait){
+  
+      strip2.clear();         //   Set all pixels in RAM to 0 (off)
+      strip3.clear();         //   Set all pixels in RAM to 0 (off)
+      strip4.clear();         //   Set all pixels in RAM to 0 (off)
+      strip5.clear();         //   Set all pixels in RAM to 0 (off)
+  for(int i=0; i<150; i++) {
+      rgb=badi[i];
+      red=rgb >> 16;
+      green=(rgb & 0x00ff00) >> 8;
+      blue=(rgb & 0x0000ff);
+      Serial.println(red);
+    if(i/15 < 2){
+      strip1.setPixelColor(i, red, green, blue);
+    }
+    else if(i/15 < 4){
+      if(i==30){
+        strip1.show();
+      strip1.clear();         //   Set all pixels in RAM to 0 (off)
+      }
+      
+      strip2.setPixelColor(i-30, red, green, blue);
+    }
+    else if(i/15 < 6){
+      if(i==60){
+        strip2.show();
+      strip2.clear();         //   Set all pixels in RAM to 0 (off)
+      }
+      strip3.setPixelColor(i-60, red, green, blue);
+  
+    }
+    else if(i/15 < 8){
+      if(i==90){
+        strip3.show();
+      strip3.clear();         //   Set all pixels in RAM to 0 (off)
+      }
+      strip4.setPixelColor(i-90, red, green, blue);
+    }
+    else if(i/15 < 10){
+      if(i==120){
+        strip4.show();
+      strip4.clear();         //   Set all pixels in RAM to 0 (off)
+      }
+      strip5.setPixelColor(i-120, red, green, blue);
+    }
+    }
+      strip5.show(); // Update strip with new contents
+      strip5.clear();
+      delay(wait);  // Pause for a moment
+  }
+
+// Some functions of our own for creating animated effects -----------------
+
+// Fill strip pixels one after another with a color. Strip is NOT cleared
+// first; anything there will be covered pixel by pixel. Pass in color
+// (as a single 'packed' 32-bit value, which you can get by calling
+// strip.Color(red, green, blue) as shown in the loop() function above),
+// and a delay time (in milliseconds) between pixels.
+void colorWipe(uint32_t color, int wait) {
+  for(int i=0; i<LED_COUNT; i++) { // For each pixel in strip...
+    strip1.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip1.show();                          //  Update strip to match
+    strip2.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip2.show();                          //  Update strip to match
+    strip3.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip3.show();                          //  Update strip to match
+    strip4.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip4.show();                          //  Update strip to match
+    strip5.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip5.show();                          //  Update strip to match
+    
+    delay(wait);                           //  Pause for a moment
+  }
+}
+
+// Theater-marquee-style chasing lights. Pass in a color (32-bit value,
+// a la strip.Color(r,g,b) as mentioned above), and a delay time (in ms)
+// between frames.
+//void theaterChase(uint32_t color, int wait) {
+//  for(int a=0; a<10; a++) {  // Repeat 10 times...
+//    for(int b=0; b<3; b++) { //  'b' counts from 0 to 2...
+//      strip1.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip2.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip3.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip4.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip5.clear();         //   Set all pixels in RAM to 0 (off)
+//      // 'c' counts up from 'b' to end of strip in steps of 3...
+//      for(int c=b; c<strip1.numPixels(); c += 3) {
+//        strip1.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip2.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip3.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip4.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip5.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//      }
+//      strip1.show(); // Update strip with new contents
+//      strip2.show(); // Update strip with new contents
+//      strip3.show(); // Update strip with new contents
+//      strip4.show(); // Update strip with new contents
+//      strip5.show(); // Update strip with new contents
+//      delay(wait);  // Pause for a moment
+//    }
+//  }
+//}
+//
+//// Rainbow cycle along whole strip. Pass delay time (in ms) between frames.
+//void rainbow(int wait) {
+//  // Hue of first pixel runs 5 complete loops through the color wheel.
+//  // Color wheel has a range of 65536 but it's OK if we roll over, so
+//  // just count from 0 to 5*65536. Adding 256 to firstPixelHue each time
+//  // means we'll make 5*65536/256 = 1280 passes through this outer loop:
+//  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256) {
+//    for(int i=0; i<strip1.numPixels(); i++) { // For each pixel in strip...
+//      // Offset pixel hue by an amount to make one full revolution of the
+//      // color wheel (range of 65536) along the length of the strip
+//      // (strip.numPixels() steps):
+//      int pixelHue = firstPixelHue + (i * 65536L / strip1.numPixels());
+//      // strip.ColorHSV() can take 1 or 3 arguments: a hue (0 to 65535) or
+//      // optionally add saturation and value (brightness) (each 0 to 255).
+//      // Here we're using just the single-argument hue variant. The result
+//      // is passed through strip.gamma32() to provide 'truer' colors
+//      // before assigning to each pixel:
+//      strip1.setPixelColor(i, strip1.gamma32(strip1.ColorHSV(pixelHue)));
+//      strip2.setPixelColor(i, strip1.gamma32(strip1.ColorHSV(pixelHue)));
+//      strip3.setPixelColor(i, strip1.gamma32(strip1.ColorHSV(pixelHue)));
+//      strip4.setPixelColor(i, strip1.gamma32(strip1.ColorHSV(pixelHue)));
+//      strip5.setPixelColor(i, strip1.gamma32(strip1.ColorHSV(pixelHue)));
+//    }
+//    strip1.show(); // Update strip with new contents
+//    strip2.show(); // Update strip with new contents
+//    strip3.show(); // Update strip with new contents
+//    strip4.show(); // Update strip with new contents
+//    strip5.show(); // Update strip with new contents
+//    delay(wait);  // Pause for a moment
+//  }
+//}
+
+//// Rainbow-enhanced theater marquee. Pass delay time (in ms) between frames.
+//void theaterChaseRainbow(int wait) {
+//  int firstPixelHue = 0;     // First pixel starts at red (hue 0)
+//  for(int a=0; a<30; a++) {  // Repeat 30 times...
+//    for(int b=0; b<3; b++) { //  'b' counts from 0 to 2...
+//      strip1.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip2.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip3.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip4.clear();         //   Set all pixels in RAM to 0 (off)
+//      strip5.clear();         //   Set all pixels in RAM to 0 (off)
+//      // 'c' counts up from 'b' to end of strip in increments of 3...
+//      for(int c=b; c<strip1.numPixels(); c += 3) {
+//        // hue of pixel 'c' is offset by an amount to make one full
+//        // revolution of the color wheel (range 65536) along the length
+//        // of the strip (strip.numPixels() steps):
+//        int      hue   = firstPixelHue + c * 65536L / strip1.numPixels();
+//        uint32_t color = strip1.gamma32(strip1.ColorHSV(hue)); // hue -> RGB
+//        strip1.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip2.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip3.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip4.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//        strip5.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+//      }
+//      strip1.show();                // Update strip with new contents
+//      strip2.show();                // Update strip with new contents
+//      strip3.show();                // Update strip with new contents
+//      strip4.show();                // Update strip with new contents
+//      strip5.show();                // Update strip with new contents
+//      delay(wait);                 // Pause for a moment
+//      firstPixelHue += 65536 / 90; // One cycle of color wheel over 90 frames
+//    }
+//  }
+//}

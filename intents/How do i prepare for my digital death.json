@@ -1,0 +1,40 @@
+{
+  "id": "47147777-83d9-4912-901a-46d35a866b85",
+  "name": "How do i prepare for my digital death",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "simple_response",
+          "platform": "google",
+          "lang": "en",
+          "condition": "",
+          "textToSpeech": "Easiest thing would be to write the account details down (like, on actual paper!) and seal them in an envelope that sits in another envelope that has a foreboding “Only to be opened in the event of my death” message on the front.\n\nThen, stash that letter in a secure location such as a solicitor’s office or some other stronghold. Or give it to a trusted party like the executor of your will.",
+          "ssml": "",
+          "displayText": ""
+        },
+        {
+          "type": 0,
+          "lang": "en",
+          "condition": "",
+          "speech": []
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

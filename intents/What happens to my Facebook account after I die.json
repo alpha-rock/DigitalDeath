@@ -1,0 +1,46 @@
+{
+  "id": "ba067641-f7bc-46f0-9cde-141f9bd03801",
+  "name": "What happens to my Facebook account after I die",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "affectedContexts": [
+        {
+          "name": "WhathappenstomyFacebookaccountafterIdie-followup",
+          "parameters": {},
+          "lifespan": 2
+        }
+      ],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "simple_response",
+          "platform": "google",
+          "lang": "en",
+          "condition": "",
+          "textToSpeech": "You can choose to either appoint a legacy contact to look after your memorialized account or have your account permanently deleted from Facebook.\nIf you don\u0027t choose to have your account permanently deleted, it will be memorialized if we become aware of your passing.",
+          "ssml": "",
+          "displayText": "You can choose to either appoint a legacy contact to look after your memorialized account or have your account permanently deleted from Facebook.\nIf you don\u0027t choose to have your account permanently deleted, it will be memorialized if we become aware of your passing."
+        },
+        {
+          "type": 0,
+          "lang": "en",
+          "condition": "",
+          "speech": "You can choose to either appoint a legacy contact to look after your memorialized account or have your account permanently deleted from Facebook.\nIf you don\u0027t choose to have your account permanently deleted, it will be memorialized if we become aware of your passing."
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

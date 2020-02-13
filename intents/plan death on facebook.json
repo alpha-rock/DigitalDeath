@@ -1,0 +1,58 @@
+{
+  "id": "bbc12bfe-0c22-411d-8be2-e9f034082c80",
+  "name": "plan death on facebook",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "WhathappenstomyFacebookaccountafterIdie.WhathappenstomyFacebookaccountafterIdie-custom-2",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "simple_response",
+          "platform": "google",
+          "lang": "en",
+          "condition": "",
+          "textToSpeech": "You can set a legacy contact on Facebook. A legacy contact is someone you choose to look after your account if it\u0027s memorialized. Facebook strongly suggest setting a legacy contact so your account can be managed once it\u0027s memorialized. You can also download your data from Facebook to prevent it from getting deleted if you choose to delete your account.",
+          "ssml": "",
+          "displayText": ""
+        },
+        {
+          "type": "suggestion_chips",
+          "platform": "google",
+          "lang": "en",
+          "condition": "",
+          "suggestions": [
+            {
+              "title": "Data on facebook"
+            },
+            {
+              "title": "Legacy contact"
+            },
+            {
+              "title": "Memorial account"
+            }
+          ]
+        },
+        {
+          "type": 0,
+          "lang": "en",
+          "condition": "",
+          "speech": "You can set a legacy contact on Facebook. A legacy contact is someone you choose to look after your account if it\u0027s memorialized. Facebook strongly suggest setting a legacy contact so your account can be managed once it\u0027s memorialized. You can also download your data from Facebook to prevent it from getting deleted if you choose to delete your account."
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

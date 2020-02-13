@@ -1,0 +1,31 @@
+{
+  "id": "e5abd9e5-35df-4d33-81c8-a69a6fb5c90f",
+  "name": "Can you tell me what happens to my data after I die?",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "lang": "en",
+          "condition": "",
+          "speech": "That is a good question, As privacy policies dictate, the companies who have your account information are certainly not going to give anything up without your password. The whole point of that is so that no one else can access your information. If you die, the company remains in possession of whatever digital assets that you left behind."
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

@@ -1,0 +1,65 @@
+{
+  "id": "273efc31-4852-4dbf-b950-c58699ea07ac",
+  "name": "How to add a legacy contact to your account?",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "simple_response",
+          "platform": "google",
+          "lang": "en",
+          "condition": "",
+          "textToSpeech": "You can add, change or remove your legacy contact in your account\u0027s General Settings at any time.",
+          "ssml": "",
+          "displayText": ""
+        },
+        {
+          "type": "basic_card",
+          "platform": "google",
+          "lang": "en",
+          "condition": "",
+          "title": "Add Legacy contacts",
+          "subtitle": "Steps to add legacy contact",
+          "formattedText": "A legacy contact is someone you choose to look after your account if it\u0027s memorialized. If you add a legacy contact, that person will be able to make decisions about your account once it is memorialized.",
+          "image": {
+            "url": "https://www.ra-plutte.de/wp-content/uploads/2017/11/facebook-recht.jpg",
+            "accessibilityText": "Facebook Image"
+          },
+          "buttons": [
+            {
+              "title": "Adding Legacy Contact",
+              "openUrlAction": {
+                "url": "https://www.facebook.com/help/103897939701143",
+                "urlTypeHint": "URL_TYPE_HINT_UNSPECIFIED"
+              }
+            }
+          ]
+        },
+        {
+          "type": 0,
+          "lang": "en",
+          "condition": "",
+          "speech": [
+            "Memorial account",
+            "Data on facebook"
+          ]
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1c10dc08-724d-4ea1-8553-73bee022a957",
+    "data": [
+      {
+        "text": "add Legacy contacts",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "updated": 0
+  },
+  {
+    "id": "e36c322f-eafc-42d9-8326-3e4cb5cb07fd",
+    "data": [
+      {
+        "text": "How to add a legacy contact to your account?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "updated": 0
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "id": "2e0b0c43-2959-4058-a0e9-dd3762832618",
+  "name": "Memorial account",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "WhathappenstomyFacebookaccountafterIdie.WhathappenstomyFacebookaccountafterIdie-custom",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "simple_response",
+          "platform": "google",
+          "lang": "en",
+          "condition": "",
+          "textToSpeech": "Facebook detects account inactivity and automatically makes your account to memorial account. Memorialized accounts are a place for friends and family to gather and share memories after a person has passed away.",
+          "ssml": "",
+          "displayText": ""
+        },
+        {
+          "type": 0,
+          "lang": "en",
+          "condition": "",
+          "speech": "Facebook detects account inactivity and automatically makes your account to memorial account. Memorialized accounts are a place for friends and family to gather and share memories after a person has passed away."
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}
